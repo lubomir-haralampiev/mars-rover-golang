@@ -1,4 +1,4 @@
-# mars-rover-kotlin
+# mars-rover-golang
 
 This is my solution for the mars rover coding challenge in Go.
 
