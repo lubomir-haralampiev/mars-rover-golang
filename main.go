@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"log"
+	"mars-rover-golang/lineprocessor"
 	"os"
 )
 
@@ -34,6 +35,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	log.Printf("read %d lines from the input", len(lines))
+	lineprocessor.ProcessLines(lines)
+
 	// defer func() {
 	// 	panicErr := recover()
 	// 	//if panicErr != nil {
@@ -42,5 +46,6 @@ func main() {
 	// 	//}
 	// }()
 	// panic("Error 666")
-	log.Println(lines)
+
+	// log.Println(lines)
 }
