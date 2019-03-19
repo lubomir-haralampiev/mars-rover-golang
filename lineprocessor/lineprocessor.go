@@ -8,13 +8,13 @@ import (
 	"strings"
 )
 
-func convertSizeToInt(size string) int {
+func convertSizeToInt(size string, channel chan int) {
 	intValue, err := strconv.Atoi(size)
 	if err != nil {
 		panic(fmt.Errorf("Can not convert %v to string", size))
 	}
 
-	return intValue
+	channel <- intValue
 }
 
 func convertSizesToInt(sizesLine string) (int, int) {
@@ -24,11 +24,11 @@ func convertSizesToInt(sizesLine string) (int, int) {
 		panic(fmt.Errorf("Expected the plateau line to have length of 2 but got %v", length))
 	}
 
-	// @TODO parallelize it. use channels ?
-	sizeX := convertSizeToInt(sizes[0])
-	sizeY := convertSizeToInt(sizes[1])
+	channel := make(chan int)
+	go convertSizeToInt(sizes[0], channel)
+	go convertSizeToInt(sizes[1], channel)
 
-	return sizeX, sizeY
+	return <-channel, <-channel
 }
 
 // ProcessLines processes all lines of the input
@@ -38,12 +38,12 @@ func ProcessLines(lines []string) {
 	log.Printf("%T %v", sizeX, sizeX)
 	log.Printf("%T %v", sizeY, sizeY)
 
-	plateau := plateau.Plateau{
+	newPlateau := plateau.Plateau{
 		SizeX: sizeX,
 		SizeY: sizeY,
 	}
 
-	log.Println(plateau)
+	log.Println(newPlateau)
 	// for _, line := range lines {
 	// 	log.Println(line)
 	// }
