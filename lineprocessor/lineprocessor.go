@@ -8,35 +8,38 @@ import (
 	"strings"
 )
 
-func convertSizeToInt(size string, channel chan int) {
+func convertStringToInt(size string) int {
 	intValue, err := strconv.Atoi(size)
 	if err != nil {
 		panic(fmt.Errorf("Can not convert %v to string", size))
 	}
 
-	channel <- intValue
+	return intValue
 }
 
-func convertSizesToInt(sizesLine string) (int, int) {
+func readPlateauSize(sizesLine string) (int, int) {
 	sizes := strings.Split(sizesLine, string(' '))
 
 	if length := len(sizes); length != 2 {
 		panic(fmt.Errorf("Expected the plateau line to have length of 2 but got %v", length))
 	}
 
-	channel := make(chan int)
-	go convertSizeToInt(sizes[0], channel)
-	go convertSizeToInt(sizes[1], channel)
+	return convertStringToInt(sizes[0]), convertStringToInt(sizes[1])
+}
 
-	return <-channel, <-channel
+func readRoverData(roverLine string) (int, int, string) {
+	roverData := strings.Split(roverLine, string(' '))
+
+	if length := len(roverData); length != 3 {
+		panic(fmt.Errorf("Expected the rover line to have 3 items but got %v", length))
+	}
+
+	return convertStringToInt(roverData[0]), convertStringToInt(roverData[1]), roverData[2]
 }
 
 // ProcessLines processes all lines of the input
 func ProcessLines(lines []string) {
-
-	sizeX, sizeY := convertSizesToInt(lines[0])
-	log.Printf("%T %v", sizeX, sizeX)
-	log.Printf("%T %v", sizeY, sizeY)
+	sizeX, sizeY := readPlateauSize(lines[0])
 
 	newPlateau := plateau.Plateau{
 		SizeX: sizeX,
@@ -44,6 +47,10 @@ func ProcessLines(lines []string) {
 	}
 
 	log.Println(newPlateau)
+
+	// log.Println(lines[1])
+	log.Println(readRoverData(lines[1]))
+
 	// for _, line := range lines {
 	// 	log.Println(line)
 	// }
