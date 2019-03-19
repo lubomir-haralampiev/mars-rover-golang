@@ -38,6 +38,13 @@ func main() {
 	log.Printf("read %d lines from the input", len(lines))
 	lineprocessor.ProcessLines(lines)
 
+	// go func() {
+	// 	fmt.Println("echo from the go routine")
+	// }()
+	// time.Sleep(1 * time.Millisecond)
+	// time.Sleep(1)
+	// fmt.Println("end of main")
+
 	// defer func() {
 	// 	panicErr := recover()
 	// 	//if panicErr != nil {
