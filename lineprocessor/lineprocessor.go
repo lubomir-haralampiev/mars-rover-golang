@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"mars-rover-golang/plateau"
+	"mars-rover-golang/rover"
 	"strconv"
 	"strings"
 )
@@ -46,10 +47,16 @@ func ProcessLines(lines []string) {
 		SizeY: sizeY,
 	}
 
-	log.Println(newPlateau)
+	log.Printf("created a new plateau %v", newPlateau)
 
-	// log.Println(lines[1])
-	log.Println(readRoverData(lines[1]))
+	x, y, orientation := readRoverData(lines[1])
+	newRover := rover.Rover{X: x, Y: y, Orientation: orientation}
+	log.Printf("created a new rover %v", newRover)
+
+	log.Println(lines[2])
+	for _, line := range lines[2] {
+		log.Printf(`received command "%v"`, string(line))
+	}
 
 	// for _, line := range lines {
 	// 	log.Println(line)
