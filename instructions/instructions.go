@@ -13,6 +13,8 @@ func ProcessInstruction(instruction string, rover roverType.Rover) roverType.Rov
 		return TurnLeft(rover)
 	case constants.TurnRight:
 		return TurnRight(rover)
+	case constants.Move:
+		return Move(rover)
 	default:
 		panic(fmt.Errorf("unknown instruction %s", instruction))
 

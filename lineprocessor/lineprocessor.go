@@ -61,6 +61,11 @@ func ProcessLines(lines []string) {
 		log.Printf(`rover state after processing the instruction "%v": %v`, instruction, rover)
 	}
 	log.Println(rover)
+	// @TODO add to the Plateau
+	// As the rovers don't run concurrently it is safe
+	// to save the rovers position after processing all the instructions.
+	// If the rovers should be able to run concurrently,
+	// we have to save their position on the plateau after every instruction.
 
 	// newRover = instructions.ProcessInstruction("L", newRover)
 	// log.Println(newRover)

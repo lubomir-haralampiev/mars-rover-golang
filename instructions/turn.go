@@ -8,7 +8,7 @@ import (
 
 // Another solution(maybe a more elegant one) is to convert the strings to degrees,
 // calculate the new degrees and convert them back to strings. This way we could support not only 90 degrees.
-// Keep it it simpler for now as the main goal is to get in touch with Go.
+// Keep it simpler for now as the main goal is to get in touch with Go.
 
 var transitionsLeft = map[string]string{
 	constants.North: constants.West,
