@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"mars-rover-golang/instructions"
-	"mars-rover-golang/plateau"
+	plateauType "mars-rover-golang/plateau"
 	roverType "mars-rover-golang/rover"
 	"strconv"
 	"strings"
@@ -43,12 +43,12 @@ func readRoverData(roverLine string) (int, int, string) {
 func ProcessLines(lines []string) {
 	sizeX, sizeY := readPlateauSize(lines[0])
 
-	newPlateau := plateau.Plateau{
+	plateau := plateauType.Plateau{
 		SizeX: sizeX,
 		SizeY: sizeY,
 	}
 
-	log.Printf("created a new plateau %v", newPlateau)
+	log.Printf("created a new plateau %v", plateau)
 
 	x, y, orientation := readRoverData(lines[1])
 	rover := roverType.Rover{X: x, Y: y, Orientation: orientation}
@@ -57,7 +57,7 @@ func ProcessLines(lines []string) {
 	for _, letter := range lines[2] {
 		instruction := string(letter)
 		log.Printf(`received instruction "%v"`, instruction)
-		rover = instructions.ProcessInstruction(instruction, rover)
+		rover = instructions.ProcessInstruction(instruction, rover, plateau)
 		log.Printf(`rover state after processing the instruction "%v": %v`, instruction, rover)
 	}
 	log.Println(rover)
@@ -65,8 +65,8 @@ func ProcessLines(lines []string) {
 	// to add the rover to the plateau after processing all the instructions.
 	// If the rovers should be able to run concurrently,
 	// we have to save their position on the plateau after every instruction.
-	newPlateau.Rovers = append(newPlateau.Rovers, rover)
-	log.Println(newPlateau)
+	plateau.Rovers = append(plateau.Rovers, rover)
+	log.Println(plateau)
 
 	// newRover = instructions.ProcessInstruction("L", newRover)
 	// log.Println(newRover)
