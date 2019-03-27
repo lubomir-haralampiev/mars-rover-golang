@@ -3,8 +3,9 @@ package lineprocessor
 import (
 	"fmt"
 	"log"
+	"mars-rover-golang/instructions"
 	"mars-rover-golang/plateau"
-	"mars-rover-golang/rover"
+	roverType "mars-rover-golang/rover"
 	"strconv"
 	"strings"
 )
@@ -50,13 +51,19 @@ func ProcessLines(lines []string) {
 	log.Printf("created a new plateau %v", newPlateau)
 
 	x, y, orientation := readRoverData(lines[1])
-	newRover := rover.Rover{X: x, Y: y, Orientation: orientation}
-	log.Printf("created a new rover %v", newRover)
+	rover := roverType.Rover{X: x, Y: y, Orientation: orientation}
+	log.Printf("created a new rover %v", rover)
 
-	log.Println(lines[2])
-	for _, line := range lines[2] {
-		log.Printf(`received command "%v"`, string(line))
+	for _, letter := range lines[2] {
+		instruction := string(letter)
+		log.Printf(`received instruction "%v"`, instruction)
+		rover = instructions.ProcessInstruction(instruction, rover)
+		log.Printf(`rover state after processing the instruction "%v": %v`, instruction, rover)
 	}
+	log.Println(rover)
+
+	// newRover = instructions.ProcessInstruction("L", newRover)
+	// log.Println(newRover)
 
 	// for _, line := range lines {
 	// 	log.Println(line)
