@@ -24,8 +24,8 @@ func ensureMovementIsPossible(plateau plateauType.Plateau, rover roverType.Rover
 
 // Move makes the rover move forward
 func Move(rover roverType.Rover, plateau plateauType.Plateau) roverType.Rover {
-	// !!! the copyong only works because its values are all of primitive types which are referenced by value.
-	// If the rover has properties of complex types, a deep copying must be implemented!
+	// !!! the copying only works because its values are all of primitive types which are referenced by value.
+	// If the rover has properties of complex types, a deep copying must be used!
 	roverCopy := rover
 
 	switch rover.Orientation {
