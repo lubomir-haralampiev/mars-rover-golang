@@ -5,7 +5,8 @@ This is my solution for the mars rover coding challenge in Go.
 The challenge is taken from https://code.google.com/archive/p/marsrovertechchallenge
 
 ### How to run it
-TBD
+* run the solution with ```go run main.go```
+* run the tests with ```go test ./... -bench .```
 
 ### The Challenge
 
