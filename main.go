@@ -10,9 +10,11 @@ import (
 const inputFile = "input.txt"
 
 func main() {
+	// If the file is big it's better to process every line right after it's read.
+	// As this is my first time coding in Go I concentrate on the solution and read all the lines, because they are just 5.
 	var lines []string
 
-	// log.SetOutput(os.Stdout)
+	log.SetOutput(os.Stdout)
 	file, err := os.Open(inputFile)
 	if err != nil {
 		log.Fatal(err)
@@ -36,23 +38,12 @@ func main() {
 	}
 
 	log.Printf("read %d lines from the input", len(lines))
-	lineprocessor.ProcessLines(lines)
 
-	// go func() {
-	// 	fmt.Println("echo from the go routine")
-	// }()
-	// time.Sleep(1 * time.Millisecond)
-	// time.Sleep(1)
-	// fmt.Println("end of main")
-
-	// defer func() {
-	// 	panicErr := recover()
-	// 	//if panicErr != nil {
-	// 	log.Println(panicErr)
-	// 	panic(errors.New("a new constructred error"))
-	// 	//}
-	// }()
-	// panic("Error 666")
-
-	// log.Println(lines)
+	result := lineprocessor.ProcessLines(lines)
+	log.Println()
+	log.Println("Output:")
+	log.Println("-------")
+	for _, line := range result {
+		log.Println(line)
+	}
 }

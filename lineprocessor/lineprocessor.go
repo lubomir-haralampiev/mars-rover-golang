@@ -39,9 +39,16 @@ func readRoverData(roverLine string) (int, int, string) {
 	return convertStringToInt(roverData[0]), convertStringToInt(roverData[1]), roverData[2]
 }
 
+func formatforOutput(rover roverType.Rover) string {
+	return fmt.Sprintf("%v %v %v", rover.X, rover.Y, rover.Orientation)
+}
+
 // ProcessLines processes all lines of the input
-func ProcessLines(lines []string) {
+func ProcessLines(lines []string) []string {
+	var result []string
+
 	sizeX, sizeY := readPlateauSize(lines[0])
+	lines = lines[1:]
 
 	plateau := plateauType.Plateau{
 		SizeX: sizeX,
@@ -50,28 +57,30 @@ func ProcessLines(lines []string) {
 
 	log.Printf("created a new plateau %v", plateau)
 
-	x, y, orientation := readRoverData(lines[1])
-	rover := roverType.Rover{X: x, Y: y, Orientation: orientation}
-	log.Printf("created a new rover %v", rover)
+	for i, line := range lines {
+		// After creating the plateau the odd lines are the rovers and the even ones the instructions.
+		// we'll pick only the odd lines to create the rovers and in the same step take the next line with the instructions
+		if i%2 != 0 {
+			continue
+		}
 
-	for _, letter := range lines[2] {
-		instruction := string(letter)
-		log.Printf(`received instruction "%v"`, instruction)
-		rover = instructions.ProcessInstruction(instruction, rover, plateau)
-		log.Printf(`rover state after processing the instruction "%v": %v`, instruction, rover)
+		x, y, orientation := readRoverData(line)
+		rover := roverType.Rover{X: x, Y: y, Orientation: orientation}
+		log.Printf("created a new rover %v", rover)
+
+		for _, letter := range lines[i+1] {
+			instruction := string(letter)
+			log.Printf(`received instruction "%v"`, instruction)
+			rover = instructions.ProcessInstruction(instruction, rover, plateau)
+			log.Printf(`rover state after processing the instruction "%v": %v`, instruction, rover)
+		}
+		// As the rovers don't run concurrently it is safe
+		// to add the rover to the plateau after processing all the instructions.
+		// If the rovers should be able to run concurrently,
+		// we have to save their position on the plateau after every instruction.
+		plateau.Rovers = append(plateau.Rovers, rover)
+		result = append(result, formatforOutput(rover))
 	}
-	log.Println(rover)
-	// As the rovers don't run concurrently it is safe
-	// to add the rover to the plateau after processing all the instructions.
-	// If the rovers should be able to run concurrently,
-	// we have to save their position on the plateau after every instruction.
-	plateau.Rovers = append(plateau.Rovers, rover)
-	log.Println(plateau)
 
-	// newRover = instructions.ProcessInstruction("L", newRover)
-	// log.Println(newRover)
-
-	// for _, line := range lines {
-	// 	log.Println(line)
-	// }
+	return result
 }
