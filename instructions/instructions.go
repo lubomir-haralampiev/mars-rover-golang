@@ -8,6 +8,10 @@ import (
 )
 
 // ProcessInstruction processes the given instruction
+//
+// Note on using "panic" - panic may not always be the better choice.
+// If an instruction can not be processed but want proceed with the next one
+// then we can recover the panis here and retun an Error as a second return value.
 func ProcessInstruction(instruction string, rover roverType.Rover, plateau plateauType.Plateau) roverType.Rover {
 	switch instruction {
 	case constants.TurnLeft:
@@ -18,6 +22,5 @@ func ProcessInstruction(instruction string, rover roverType.Rover, plateau plate
 		return Move(rover, plateau)
 	default:
 		panic(fmt.Errorf("unknown instruction %s", instruction))
-
 	}
 }
